@@ -55,7 +55,7 @@ class ApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-   public function register(Request $request, \App\Models\CustomerData $CustomerData)
+   public function register(Request $request)
     {
         
         //check if basic HTTP auth pass
@@ -116,8 +116,7 @@ class ApiController extends Controller
                 return $this->setApiStatusCode(200)->respondSuccess(JWTAuth::fromUser(Auth::user(), [
                     'full_name' => Auth::user()->first_name . ' ' . Auth::user()->last_name, 
                     'phone' => (isset(Auth::user()->phone_1) ? Auth::user()->phone_1: Auth::user()->phone_2 ),
-                    'email' => Auth::user()->email,
-                    'avatar' => Auth::user()->avatar] ));
+                    'email' => Auth::user()->email] ));
             } else { 
                 return $this->setApiStatusCode(103)->setStatusCode(200)->respond('Incorrect login credentials');
             }

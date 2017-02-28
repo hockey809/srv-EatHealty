@@ -20,7 +20,7 @@ class Customer extends Model
     use SoftDeletes;
     
     protected $table = 'users';
-   
+    
     public function __construct()
     {
         parent::__construct();
@@ -35,7 +35,7 @@ class Customer extends Model
     public function saveNewEntry($data)
     {
 
-         // validator 
+        // validator 
         $validator = $this->registerValidator($data);
         if($validator->fails()) 
         {
@@ -52,6 +52,7 @@ class Customer extends Model
             $this->middle_name = $data['middle_name'];
             $this->last_name = $data['last_name'];
             $this->gender = $data['gender'];
+            $this->birthdate = Carbon::createFromFormat('d/m/Y', $data['birthdate']);
             $this->phone_1 = $data['phone_1'];
             $this->phone_2 = $data['phone_2'];
             $this->email = $this->username = $data['email'];
@@ -71,6 +72,48 @@ class Customer extends Model
         return redirect('/');
         
     }
+    
+    public function updateEntry($entry, $data)
+    {
+       
+        // validator 
+        $validator = $this->updateValidator($data);
+        if($validator->fails()) 
+        {
+            Session::flash('validation_errors',$validator->errors()->all());
+
+            return back()->withInput();
+                          
+        }
+        
+        try { 
+            $entry->first_name = $data['first_name'];
+            $entry->middle_name = $data['middle_name'];
+            $entry->last_name = $data['last_name'];
+            $entry->birthdate = Carbon::createFromFormat('d/m/Y', $data['birthdate']);
+            $entry->gender = $data['gender'];
+            $entry->phone_1 = $data['phone_1'];
+            $entry->phone_2 = $data['phone_2'];
+            $entry->email = $this->username = $data['email'];
+            if(isset($data['password'])) {
+                $entry->password = bcrypt($data['password']);
+            }
+
+            $entry->save();
+        
+        } catch (\Exception $ex) {
+                      
+            Session::flash('validation_errors',[Lang::get('common.error_messages.record_save_fail')]);
+
+            return back()->withInput();
+        }
+        
+        Session::flash('success',Lang::get('common.success_messages.record_saved_success'));
+        
+        return redirect('/');
+        
+    }
+    
     
     public function deleteCustomer($id)
     {    
@@ -125,4 +168,27 @@ class Customer extends Model
 
     }
     
+    private function updateValidator($data)
+    {
+        $rules = [
+            'first_name'        => 'required|alpha_dash',
+            'last_name'         => 'required|alpha_dash',
+            'email'             => 'required|email',
+            'password'          => 'confirmed|min:6'     
+        ];
+
+        $messages = [
+            'email.required'           => Lang::get('pages.users.email_required'),
+            'email.email'              => Lang::get('pages.users.email_email'),
+            'password.confirmed'       => Lang::get('pages.users.password_confirmed'),
+            'password.min'             => Lang::get('pages.users.password_min'),
+            'first_name.required'      => Lang::get('pages.users.first_name_required'),
+            'last_name.required'       => Lang::get('pages.users.last_name_required'),
+            'first_name.alpha_dash'    => Lang::get('pages.users.first_name_alpha_dash'),
+            'last_name.alpha_dash'     => Lang::get('pages.users.last_name_alpha_dash'),
+        ];
+
+        return Validator::make($data, $rules, $messages);        
+
+    }
 }

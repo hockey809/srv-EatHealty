@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use DB;
+use Lang;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -57,7 +58,8 @@ class Food extends Model
                 'created_at' => Carbon::now(),
             ]);
          
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
+            
             return ['status' => false, 'msg' => Lang::get('common.error_messages.record_save_fail')];
         }
         

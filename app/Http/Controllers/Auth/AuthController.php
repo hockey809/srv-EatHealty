@@ -1,5 +1,8 @@
-<?php namespace App\Http\Controllers\Auth;
+<?php 
 
+namespace App\Http\Controllers\Auth;
+
+use Lang;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -94,5 +97,22 @@ class AuthController extends Controller
         }
         
         return false;
+    }
+    
+    public function activateViaConfirmationLink($token)
+    {
+        $user = User::where('confirmation_code', $token)->first();
+
+        if(!is_null($user)) {
+            if($user->confirmed == 0) {
+                $user->confirmed = 1;
+                $user->save();
+                return view('auth.register_status', ['register_success' => Lang::get('pages.users.activation_success',['name' => $user->first_name.' '.$user->last_name])]);
+            } else {
+                return view('auth.register_status', ['register_fail' => Lang::get('pages.users.activation_already_confirmed', ['name' => $user->first_name.' '.$user->last_name]) ]);
+            }
+        }
+
+        return redirect('/register_status');
     }
 }

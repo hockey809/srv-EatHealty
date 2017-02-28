@@ -5,18 +5,22 @@
 Route::post('/api/v1/clients/register', 'ApiController@register');
 Route::post('/api/v1/clients/login', 'ApiController@login');
 
-// new registration way
+// registration 
 Route::get('/register', 'Auth\AuthController@showRegistrationForm'); 
 Route::post('/register/sendemail', 'Auth\AuthController@registerAndSendActivationEmail'); 
 Route::get('/register/token/{token}', 'Auth\AuthController@activateViaConfirmationLink'); 
-
-    
-// drawer routes
-Route::group(['middleware' => 'jwt'], function() {
-    Route::get('/api/v1/webview/dashboard', 'MobileWebviewController@dashboard');
-    Route::get('/api/v1/webview/add', 'MobileWebviewController@schedule');  
-    // more API web views come here
+Route::get('/register_status', function(){
+    return View::make('auth.register_status');
 });
+
+//Route::group(['middleware' => 'jwt'], function() { 
+    Route::get('/api/v1/food/list', 'MobileFoodController@listData');  
+    Route::get('/api/v1/customer/dashboard/{from?}/{to?}', 'MobileCustomerController@dashboard');
+    Route::get('/api/v1/customer/get_food/{food_id}', 'MobileCustomerController@getFood');  
+    Route::post('/api/v1/customer/add_food', 'MobileCustomerController@addFoodToCustomer');  
+    Route::post('/api/v1/customer/update_food/{id}', 'MobileCustomerController@updateFood');  
+    Route::post('/api/v1/customer/delete_food/{id}', 'MobileCustomerController@deleteFood');  
+//});
 //
 //end of API routes
 
@@ -27,6 +31,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/customers', 'CustomerController@create');
     Route::post('/customers','CustomerController@store');
     Route::get('/customers/{id}', 'CustomerController@show');
+    Route::put('/customers/{id}', 'CustomerController@update');
+    Route::get('/customers/edit/{id}', 'CustomerController@edit');
     Route::delete('/customers/{id}', 'CustomerController@destroy');
     
     Route::get('/food','FoodController@index');

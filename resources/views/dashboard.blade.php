@@ -23,7 +23,8 @@
                 <th>Име</th>
                 <th>Имейл</th>
                 <th>Телефон</th>
-                <th>Дата</th>
+                <th class="small">Дата раждане</th>
+                <th class="small">Дата регистрация</th>
                 <th>Действия</th>
             </tr>
             </thead>
@@ -33,12 +34,13 @@
                     <td><a href="/customers/{{$value->id}}">{{$value->first_name . ' ' . $value->last_name}}</a></td>
                     <td>{{$value->email}}</td>
                     <td>{{$value->phone_1}} {{$value->phone_2}}</td>
-                    <td>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$value->created_at)->format('d.m.Y H:i')}}</td>                    
+                    <td>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$value->birthdate)->format('d.m.Y')}}</td>
+                    <td>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$value->created_at)->format('d.m.Y')}}</td>                    
                     <td>
-<!--                        <a class="btn yellow-casablanca" data-resource-id="{{$value->id}}" title="Изписване" href="javascript:;">
-                            <i class="fa fa-truck"></i>
-                        </a>-->
-                        <a class="btn red delete-button" data-resource-id="{{$value->id}}" title="Изтриване" href="#">
+                        <a class="btn" data-resource-id="{{$value->id}}" title="Редакция" href="/customers/edit/{{$value->id}}">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a class="btn delete-button" data-resource-id="{{$value->id}}" title="Изтриване" href="#">
                             <i class="fa fa-times"></i>
                         </a>
                     </td>

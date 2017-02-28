@@ -95,7 +95,7 @@
                                                 </thead>
                                                 <tbody>
                                                 @foreach($data['item']->foods()->get() as $key => $food)
-                                                <tr>
+                                                <tr>                                                    
                                                     <td>{{$food->title}}</td>
                                                     <td>{{$food->amount}} @if($food->units == 'abs') броя @else грама @endif </td>
                                                     <td>{{$food->calories}}</td>
