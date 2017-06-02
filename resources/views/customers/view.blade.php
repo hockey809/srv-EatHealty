@@ -140,10 +140,10 @@
             data: data,
             url: '/food/add_to_customer',
             success: function (response) {
-                location.reload()
+                location.reload();
             }
         });
-    })
+    });
 </script>
 @stop
     

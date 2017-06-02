@@ -51,12 +51,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/password/reset/{token?}', 'Auth\PasswordController@showResetForm');
     
     
-    // NOT USED
-//    Route::get('/activate/{code?}', 'Auth\AuthController@showRegistrationForm'); //this is showing registration form with the act code
-//    Route::post('/activate/{activate?}', 'Auth\AuthController@register'); //this is POST for registration form(incl activation code)
-//    //this is called from modal ajax POST to send registration code 
-//    Route::post('/register/sendactivation', 'RegisterController@activation');
-    
     
 });
 

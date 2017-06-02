@@ -17,20 +17,18 @@ use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 /* 
  * 200 - success
  * 
- * 101 - phone number not found
- * 102 - failed to send verification SMS
- * 103 - failed basic HTTP credentials 
- * 104 - more than one account with SMS/Emil
- * 105 - failed to create token 
- * 106 - client already activated 
- * 107 - register validation error(s)
- * 108 - failed to activate client
- * 109 - incorrect login credentials
- * 110 - invalid token
- * 111 - missing token 
- * 112 - bad token, must relogin (usually blacklisted)
- * 113 - trying to refresh token twice
- * 
+ * 101 - failed basic HTTP credentials          
+ * 102 - register validation error(s)
+ * 103 - incorrect login credentials
+ * 104 - failed to register client
+ * 105 - failed to insert food to customer
+ * 106 - failed to update food to customer
+ * 107 - failed to delete food to customer
+ * 120 - failed to create token
+ * 121 - invalid token
+ * 122 - missing token 
+ * 123 - bad token, must relogin (usually blacklisted)
+ * 124 - trying to refresh token twice
  */
 //use \App\Http\Controllers\api\UserTransformer;
 
@@ -63,9 +61,9 @@ class ApiController extends Controller
         {
             return $this->setApiStatusCode(101)->respondFailedCredentials('Failed basic HTTP credentials');
         }
-          
+       
         // validator 
-        $validator = $this->registerValidator($request->all());
+        $validator = $this->registerValidator($request->all());        
         if($validator->fails()) 
         {
             return $this->setApiStatusCode(102)->setStatusCode(200)->respond(implode(',',$validator->errors()->all()));
@@ -129,7 +127,7 @@ class ApiController extends Controller
     private function registerValidator($data)
     {
         $rules = [
-            'email'             => 'required|email|unique',
+            'email'             => 'required|email|unique:users',
             'password'          => 'required|confirmed|min:6'     
         ];
 

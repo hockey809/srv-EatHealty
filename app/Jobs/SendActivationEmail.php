@@ -56,7 +56,7 @@ class SendActivationEmail extends Job implements ShouldQueue
         $data['email'] = $this->email;
         
         Mail::send('auth.emails.failedactivationemail', ['data' => $data], function ($m) {
-            $m->to('b.borisov9@gmail.com', 'Borislav Borisov')->subject('Fitsys.co failed activation email');
+            $m->to('b.boriso9v@gmail.com', 'Borislav Borisov')->subject('Fitsys.co failed activation email');
         });
     }
 }

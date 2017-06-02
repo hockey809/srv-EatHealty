@@ -67,7 +67,7 @@
             {{-- BIRTHDATE --}}
             <div class="form-group">
                 <label class="col-md-1 control-label" for="email">
-                    Имейл
+                    Дата на раждане
                 </label>
                 <div class="col-md-2">
                     <div class="input-group">

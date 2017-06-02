@@ -34,7 +34,7 @@
                     <td><a href="/customers/{{$value->id}}">{{$value->first_name . ' ' . $value->last_name}}</a></td>
                     <td>{{$value->email}}</td>
                     <td>{{$value->phone_1}} {{$value->phone_2}}</td>
-                    <td>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$value->birthdate)->format('d.m.Y')}}</td>
+                    <td>@if(!is_null($value->birthdate)){{Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$value->birthdate)->format('d.m.Y')}}@endif</td>
                     <td>{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$value->created_at)->format('d.m.Y')}}</td>                    
                     <td>
                         <a class="btn" data-resource-id="{{$value->id}}" title="Редакция" href="/customers/edit/{{$value->id}}">
